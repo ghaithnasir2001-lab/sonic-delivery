@@ -9,6 +9,13 @@
     <link rel="manifest" href="manifest.json">
     <meta name="theme-color" content="#2563eb">
     <link rel="apple-touch-icon" href="logo.png">
+    <script>
+      if ('serviceWorker' in navigator) {
+        window.addEventListener('load', () => {
+          navigator.serviceWorker.register('/sonic-delivery/sw.js', { scope: '/sonic-delivery/' });
+        });
+      }
+    </script>
 </head>
 
 <body>

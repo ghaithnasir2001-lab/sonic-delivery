@@ -1,4 +1,4 @@
-const CACHE_NAME = 'sonic-delivery-v2';
+const CACHE_NAME = 'sonic-delivery-v3';
 const urlsToCache = [
     '/sonic-delivery/',
     '/sonic-delivery/index.html',
@@ -6,21 +6,25 @@ const urlsToCache = [
     '/sonic-delivery/style.css',
     '/sonic-delivery/script.js',
     '/sonic-delivery/order.js',
-    '/sonic-delivery/logo.png',
-    '/sonic-delivery/splash_delivery_icon.png',
-    '/sonic-delivery/icon-192.png',
-    '/sonic-delivery/icon-512.png',
-    '/sonic-delivery/screenshot-wide.png',
-    '/sonic-delivery/screenshot-narrow.png'
+    '/sonic-delivery/manifest.json'
 ];
 
 self.addEventListener('install', event => {
     event.waitUntil(
         caches.open(CACHE_NAME)
             .then(cache => {
-                return cache.addAll(urlsToCache);
+                return Promise.all(
+                    urlsToCache.map(url => {
+                        return cache.add(url).catch(err => console.log('Failed cache:', url, err));
+                    })
+                );
             })
+            .then(() => self.skipWaiting())
     );
+});
+
+self.addEventListener('activate', event => {
+    event.waitUntil(self.clients.claim());
 });
 
 self.addEventListener('fetch', event => {

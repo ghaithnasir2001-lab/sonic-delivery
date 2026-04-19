@@ -35,10 +35,4 @@ window.addEventListener("load", () => {
   }, 2500);
 });
 
-if ('serviceWorker' in navigator) {
-  window.addEventListener('load', () => {
-    navigator.serviceWorker.register('/sonic-delivery/sw.js', { scope: '/sonic-delivery/' })
-      .then(reg => console.log('Service Worker registered.', reg))
-      .catch(err => console.error('Service Worker registration failed:', err));
-  });
-}
+
